@@ -114,6 +114,13 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         vscode.window.registerTreeDataProvider('voktSpecs', treeProvider)
     );
 
+    // Register tree view refresh command
+    context.subscriptions.push(
+        vscode.commands.registerCommand('voktSpecs.refresh', () => {
+            treeProvider?.refresh();
+        })
+    );
+
     // Register webview command (Phase 3)
     context.subscriptions.push(
         vscode.commands.registerCommand('vokt.showWebview', () => {
