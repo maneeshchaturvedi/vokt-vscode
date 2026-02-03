@@ -13,22 +13,21 @@ go install github.com/maneeshchaturvedi/vokt@latest
 
 ## Installation
 
-### From VSIX (Self-Hosted)
+Download the latest `.vsix` from [GitHub Releases](https://github.com/maneeshchaturvedi/vokt-vscode/releases).
 
-Download the `.vsix` file from [devtools.stackshala.com](https://devtools.stackshala.com):
-
+**Via command line:**
 ```bash
-# Download and install via command line
-curl -O https://devtools.stackshala.com/vokt-vscode-0.1.0.vsix
+# Download latest release
+curl -LO https://github.com/maneeshchaturvedi/vokt-vscode/releases/latest/download/vokt-vscode-0.1.0.vsix
+
+# Install
 code --install-extension vokt-vscode-0.1.0.vsix
 ```
 
-Or install via VS Code UI:
-1. Open VS Code
-2. Go to Extensions (Ctrl+Shift+X / Cmd+Shift+X)
-3. Click the "..." menu in the top-right
-4. Select "Install from VSIX..."
-5. Choose the downloaded `.vsix` file
+**Via VS Code UI:**
+1. Download `.vsix` from releases page
+2. Extensions → "..." menu → "Install from VSIX..."
+3. Select downloaded file
 
 ## Features
 
