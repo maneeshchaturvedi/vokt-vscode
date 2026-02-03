@@ -1,0 +1,258 @@
+{
+  "name": "vokt-vscode",
+  "displayName": "Vokt - Behavioral Drift Detection",
+  "description": "VS Code extension for Vokt - provides real-time behavioral drift detection via LSP integration with the Vokt CLI",
+  "version": "0.1.0",
+  "publisher": "StackShala",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maneeshchaturvedi/vokt-vscode"
+  },
+  "engines": {
+    "vscode": "^1.96.0"
+  },
+  "categories": [
+    "Linters",
+    "Programming Languages"
+  ],
+  "keywords": [
+    "behavioral-specs",
+    "drift-detection",
+    "ai-code",
+    "specifications",
+    "linting"
+  ],
+  "activationEvents": [
+    "onLanguage:go",
+    "onLanguage:python",
+    "onLanguage:typescript",
+    "onLanguage:javascript",
+    "onLanguage:java",
+    "onLanguage:rust",
+    "workspaceContains:.vokt"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "vokt.showSpec",
+        "title": "Vokt: Show Specification",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "vokt.acknowledgeIntent",
+        "title": "Vokt: Mark as Intended",
+        "icon": "$(check)"
+      },
+      {
+        "command": "vokt.restartServer",
+        "title": "Vokt: Restart LSP Server",
+        "icon": "$(debug-restart)"
+      },
+      {
+        "command": "vokt.generateSpec",
+        "title": "Vokt: Generate Spec for Current File",
+        "icon": "$(add)"
+      },
+      {
+        "command": "vokt.refreshSpecs",
+        "title": "Vokt: Refresh Specs",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "vokt.showDiff",
+        "title": "Vokt: Show Git Diff",
+        "icon": "$(diff)"
+      }
+    ],
+    "configuration": {
+      "title": "Vokt",
+      "properties": {
+        "vokt.serverPath": {
+          "type": "string",
+          "default": "vokt",
+          "description": "Path to the vokt CLI executable"
+        },
+        "vokt.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Trace communication with LSP server"
+        },
+        "vokt.diagnostics.debounceMs": {
+          "type": "number",
+          "default": 500,
+          "description": "Debounce delay in milliseconds before running diagnostics after typing"
+        },
+        "vokt.diagnostics.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable drift detection diagnostics"
+        },
+        "vokt.filter.ignoreComments": {
+          "type": "boolean",
+          "default": true,
+          "description": "Ignore comment-only changes (don't send to LSP server)"
+        },
+        "vokt.filter.ignoreWhitespace": {
+          "type": "boolean",
+          "default": true,
+          "description": "Ignore whitespace-only changes (don't send to LSP server)"
+        },
+        "vokt.filter.ignoreFormatting": {
+          "type": "boolean",
+          "default": true,
+          "description": "Ignore formatting-only changes (don't send to LSP server)"
+        },
+        "vokt.inlayHints.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable inlay hints for behavioral constraints"
+        },
+        "vokt.semanticHighlighting.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable semantic highlighting for constrained code sections"
+        },
+        "vokt.autoGenerateSpecs": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically generate specs for files that don't have one"
+        },
+        "vokt.statusBar.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show spec coverage status in status bar"
+        }
+      }
+    },
+    "views": {
+      "explorer": [
+        {
+          "id": "voktSpecs",
+          "name": "Vokt Specs",
+          "icon": "$(file-code)",
+          "contextualTitle": "Vokt Specifications"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "vokt",
+          "title": "Vokt",
+          "icon": "$(shield)"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "vokt.refreshSpecs",
+          "when": "view == voktSpecs",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "vokt.showSpec",
+          "when": "view == voktSpecs && viewItem == spec"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "vokt.showSpec",
+          "when": "editorFocus",
+          "group": "vokt@1"
+        },
+        {
+          "command": "vokt.generateSpec",
+          "when": "editorFocus",
+          "group": "vokt@2"
+        }
+      ]
+    },
+    "colors": [
+      {
+        "id": "vokt.driftHighlight",
+        "description": "Background color for code sections with behavioral drift",
+        "defaults": {
+          "dark": "#ff990033",
+          "light": "#ff990033",
+          "highContrast": "#ff9900"
+        }
+      },
+      {
+        "id": "vokt.constraintHighlight",
+        "description": "Background color for code sections with behavioral constraints",
+        "defaults": {
+          "dark": "#00ff0022",
+          "light": "#00ff0022",
+          "highContrast": "#00ff00"
+        }
+      }
+    ],
+    "semanticTokenTypes": [
+      {
+        "id": "voktConstraint",
+        "superType": "comment",
+        "description": "Code with behavioral constraints"
+      },
+      {
+        "id": "voktDrift",
+        "superType": "comment",
+        "description": "Code with detected drift"
+      }
+    ],
+    "semanticTokenModifiers": [
+      {
+        "id": "behavioral",
+        "description": "Has behavioral specification"
+      }
+    ],
+    "semanticTokenScopes": [
+      {
+        "language": "*",
+        "scopes": {
+          "voktConstraint": [
+            "markup.underline.vokt.constraint"
+          ],
+          "voktDrift": [
+            "markup.bold.vokt.drift"
+          ]
+        }
+      }
+    ]
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.18.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.10.0",
+    "@types/vscode": "^1.96.0",
+    "@vscode/test-electron": "^2.5.2",
+    "@vscode/vsce": "^3.2.0",
+    "eslint": "^9.18.0",
+    "mocha": "^10.8.2",
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.20.0"
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src",
+    "pretest": "npm run compile",
+    "test": "node ./out/test/runTest.js",
+    "test:unit": "mocha --require ts-node/register 'src/test/unit/**/*.test.ts'",
+    "package": "vsce package",
+    "publish": "vsce publish"
+  }
+}

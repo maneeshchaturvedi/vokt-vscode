@@ -1,0 +1,19 @@
+.vscode/**
+.vscode-test/**
+src/**
+.gitignore
+.yarnrc
+vsc-extension-quickstart.md
+**/tsconfig.json
+**/.eslintrc.json
+node_modules/**
+docs/**
+.github/**
+*.vsix
+
+# Exclude map files and declaration files to reduce size
+**/*.map
+**/*.d.ts
+
+# Exclude test files
+**/test/**
