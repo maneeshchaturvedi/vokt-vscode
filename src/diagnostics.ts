@@ -81,6 +81,11 @@ export class SmartDiagnostics implements vscode.Disposable {
             return;
         }
 
+        // Only process file:// scheme documents (ignore output channels, untitled, etc.)
+        if (event.document.uri.scheme !== 'file') {
+            return;
+        }
+
         this.stats.totalChanges++;
 
         // Classify the changes
@@ -107,6 +112,11 @@ export class SmartDiagnostics implements vscode.Disposable {
 
     onDocumentSave(document: vscode.TextDocument): void {
         if (!this.config.enabled) {
+            return;
+        }
+
+        // Only process file:// scheme documents
+        if (document.uri.scheme !== 'file') {
             return;
         }
 
