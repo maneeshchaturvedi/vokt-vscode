@@ -2,7 +2,7 @@
   "name": "vokt-vscode",
   "displayName": "Vokt - Behavioral Drift Detection",
   "description": "VS Code extension for Vokt - provides real-time behavioral drift detection via LSP integration with the Vokt CLI",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publisher": "StackShala",
   "license": "MIT",
   "repository": {
